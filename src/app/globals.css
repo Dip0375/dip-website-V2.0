@@ -1,26 +1,195 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: 215 100% 6%;
+    --foreground: 210 40% 98%;
+
+    --card: 215 91% 8%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 215 91% 6%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 180 100% 70%;
+    --primary-foreground: 215 91% 10%;
+
+    --secondary: 215 86% 16%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 215 35% 35%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 180 100% 60%;
+    --accent-foreground: 215 91% 10%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 215 35% 20%;
+    --input: 215 35% 20%;
+    --ring: 180 100% 70%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 215 91% 6%;
+    --sidebar-foreground: 210 40% 90%;
+    --sidebar-primary: 180 100% 70%;
+    --sidebar-primary-foreground: 215 91% 10%;
+    --sidebar-accent: 215 86% 16%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 215 35% 20%;
+    --sidebar-ring: 180 100% 70%;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply tracking-tight;
+  }
+
+  .cyber-grid {
+    background-size: 50px 50px;
+    background-image: 
+      linear-gradient(to right, rgba(100, 255, 218, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(100, 255, 218, 0.03) 1px, transparent 1px);
+  }
+
+  .cyber-border {
+    @apply border border-cyber-accent/30 relative;
+  }
+  
+  /* .cyber-border::before {
+    content: '';
+    @apply absolute -inset-[1px] border border-cyber-accent/20 opacity-0 transition-opacity duration-300;
+  }
+  
+  .cyber-border:hover::before {
+    @apply opacity-100;
+  }
+   */
+  /* Additional cyber-inspired effects */
+  .cyber-text-glow {
+    text-shadow: 0 0 10px rgba(100, 255, 218, 0.5),
+                 0 0 20px rgba(100, 255, 218, 0.3);
+  }
+  
+  .cyber-box-glow {
+    box-shadow: 0 0 15px -5px rgba(100, 255, 218, 0.5);
+  }
+  
+  .cyber-scanner::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-b from-transparent via-cyber-accent/10 to-transparent h-full w-full;
+    animation: scan 3s linear infinite;
+  }
+  
+  @keyframes scan {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100%); }
+  }
+}
+
+@layer utilities {
+  .animate-delay-100 {
+    animation-delay: 100ms;
+  }
+  .animate-delay-200 {
+    animation-delay: 200ms;
+  }
+  .animate-delay-300 {
+    animation-delay: 300ms;
+  }
+  .animate-delay-400 {
+    animation-delay: 400ms;
+  }
+  .animate-delay-500 {
+    animation-delay: 500ms;
+  }
+  
+  /* Additional animation utilities */
+  .hover-scale {
+    @apply transition-transform duration-200;
+  }
+  .hover-scale:hover {
+    transform: scale(1.05);
+  }
+  
+  .hover-lift {
+    @apply transition-transform duration-300;
+  }
+  .hover-lift:hover {
+    transform: translateY(-4px);
+  }
+  
+  .animated-gradient {
+    background: linear-gradient(270deg, #64ffda, #0a192f, #64ffda);
+    background-size: 600% 600%;
+    animation: gradient-shift 10s ease infinite;
+  }
+  
+  @keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+}
+
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
 }
