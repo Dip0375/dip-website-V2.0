@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { Shield, ExternalLink } from "lucide-react";
 import Link from "next/link";
+import TypingText from "./TypingText";
 
 const Hero = () => {
   return (
@@ -45,6 +46,8 @@ const Hero = () => {
               >
                 I'm <span className="text-cyber-accent"> Infinite</span> AKA Dipnarayan Nandi
               </motion.h1>
+
+              <TypingText />
 
               <motion.p
                 initial={{ opacity: 0, y: 20 }}

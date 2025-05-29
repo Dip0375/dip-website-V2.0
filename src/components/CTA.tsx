@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -7,32 +7,69 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { sanityClient } from "@/lib/sanity";
 
 const CTA = () => {
-    const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState({
     name: "",
     email: "",
     subject: "",
-    message: ""
+    message: "",
   });
   const { toast } = useToast();
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-    const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    toast({
-      title: "Message Sent!",
-      description: "Thank you for your inquiry. We'll get back to you soon.",
-    });
-    // Reset form
-    setFormData({ name: "", email: "", subject: "", message: "" });
-  };
 
+    try {
+      const { name, email, subject, message } = formData;
+
+      // Validate email manually (optional)
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        toast({
+          title: "Invalid Email",
+          description: "Please enter a valid email address.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Send form data to Sanity
+      await sanityClient.create({
+        _type: "contact",
+        name,
+        email,
+        subject,
+        message,
+        createdAt: new Date().toISOString(),
+      });
+
+      toast({
+        title: "Message Sent!",
+        description: "Thank you for your inquiry. We'll get back to you soon.",
+      });
+
+      // Reset form
+      setFormData({ name: "", email: "", subject: "", message: "" });
+    } catch (error) {
+      console.error("Sanity submission error:", error);
+      toast({
+        title: "Submission Failed",
+        description:
+          "There was an error sending your message. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+  
   return (
     <section className="py-20 relative overflow-hidden">
       <div className="absolute inset-0 z-0 cyber-grid"></div>
@@ -54,16 +91,19 @@ const CTA = () => {
           </p>
 
           <div className="p-6 md:p-8 rounded-lg border border-cyber-accent/30 bg-cyber-accent/5 text-center">
-          <h3 className="text-xl font-semibold mb-4">Get in Touch</h3>
+            <h3 className="text-xl font-semibold mb-4">Get in Touch</h3>
             <p className="text-muted-foreground mb-6">
               Contact me to discuss how we can work together to secure your
               organization against evolving threats.
             </p>
 
-          <form onSubmit={handleSubmit} className="space-y-6 text-base">
+            <form onSubmit={handleSubmit} className="space-y-6 text-base">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2 flex flex-col">
-                  <Label htmlFor="name" className="text-slate-200 font-medium text-left">
+                  <Label
+                    htmlFor="name"
+                    className="text-slate-200 font-medium text-left"
+                  >
                     Full Name
                   </Label>
                   <Input
@@ -78,7 +118,10 @@ const CTA = () => {
                   />
                 </div>
                 <div className="space-y-2 flex flex-col">
-                  <Label htmlFor="email" className="text-slate-200 font-medium text-left">
+                  <Label
+                    htmlFor="email"
+                    className="text-slate-200 font-medium text-left"
+                  >
                     Email Address
                   </Label>
                   <Input
@@ -93,9 +136,12 @@ const CTA = () => {
                   />
                 </div>
               </div>
-              
+
               <div className="space-y-2 flex flex-col">
-                <Label htmlFor="subject" className="text-slate-200 font-medium text-left">
+                <Label
+                  htmlFor="subject"
+                  className="text-slate-200 font-medium text-left"
+                >
                   Subject
                 </Label>
                 <Input
@@ -109,9 +155,12 @@ const CTA = () => {
                   placeholder="Security consultation inquiry"
                 />
               </div>
-              
+
               <div className="space-y-2 flex flex-col">
-                <Label htmlFor="message" className="text-slate-200 font-medium text-left">
+                <Label
+                  htmlFor="message"
+                  className="text-slate-200 font-medium text-left"
+                >
                   Message
                 </Label>
                 <Textarea
@@ -125,18 +174,16 @@ const CTA = () => {
                   placeholder="Tell me about your security needs, current challenges, or specific areas where you'd like assistance..."
                 />
               </div>
-              
+
               <div className="pt-4">
                 <Button
-                  type="submit" 
+                  type="submit"
                   className="bg-cyber-accent text-cyber-dark font-medium hover:bg-cyber-accent/90 transition-colors py-4 h-11 px-8 rounded-lg duration-200 transform shadow-lg"
                 >
                   Send Message
                 </Button>
               </div>
             </form>
-            
-          
           </div>
         </motion.div>
       </div>

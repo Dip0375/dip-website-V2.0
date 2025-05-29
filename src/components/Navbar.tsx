@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {  Infinity } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -31,7 +32,7 @@ const Navbar = () => {
   return (
     <nav
       className={cn(
-        "fixed w-full z-50 transition-all duration-300 py-4 px-6 md:px-10",
+        "fixed w-full z-50 transition-all duration-300 py-1 px-6 md:px-10",
         scrolled
           ? "bg-background/90 backdrop-blur-md border-b border-border shadow-md"
           : "bg-transparent"
@@ -39,7 +40,8 @@ const Navbar = () => {
     >
       <div className="flex items-center justify-between max-w-7xl mx-auto">
         <Link href="/" className="flex items-center gap-2">
-          <Infinity className="h-6 w-6 text-cyber-accent" />
+          {/* <Infinity className="h-6 w-6 text-cyber-accent" /> */}
+          <Image width={60} height={60} src='/logo.png' alt="Dipnarayan Nandi" />
           <span className="font-bold text-xl">Infinite</span>
         </Link>
 
