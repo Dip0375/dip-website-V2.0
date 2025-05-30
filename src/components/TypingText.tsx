@@ -37,10 +37,10 @@ export default function TypingText() {
       <span className="text-white">I'm a</span>
       <motion.span
         key={text}
-        className="text-yellow-400"
-        initial={{ opacity: 0.5 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.3 }}
+        className="text-[#7CFC00]"
+        // initial={{ opacity: 0.5 }}
+        // animate={{ opacity: 1 }}
+        // transition={{ duration: 0.3 }}
       >
         {text}
         <span className="blinking-cursor">|</span>
