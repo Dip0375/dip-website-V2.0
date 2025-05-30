@@ -2,7 +2,7 @@ import HomeClient from "@/components/HomeClient";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Dipnarayan Nandi | Cybersecurity Expert & Ethical Hacker",
+  title: "Dipnarayan Nandi | Cyber Security Enthusiasts",
   description:
     "Portfolio of Dipnarayan Nandi, a certified cybersecurity professional skilled in penetration testing, threat intelligence, and network security. Explore projects, blogs, and certifications.",
   keywords: [

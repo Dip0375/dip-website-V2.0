@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
-const words = [' Cloud Security Engineer', ' Cybersecurity Enthusiast'];
+const words = [' Cloud Security Engineer', ' Cybersecurity Enthusiast' , 'Career Consultant' ' Tech Blogger', ' Freelancer', ' Traineer'];
 
 export default function TypingText() {
   const [index, setIndex] = useState(0);
