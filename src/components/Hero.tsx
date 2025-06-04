@@ -32,10 +32,7 @@ const Hero = () => {
                 transition={{ duration: 0.7, delay: 0.2 }}
                 className="inline-block"
               >
-                <div className="inline-flex items-center py-2 px-4 rounded-full bg-cyber-accent/20 border border-cyber-accent/30 text-cyber-accent text-sm font-medium mb-4">
-                  <Shield size={14} className="mr-2" />
-                  Cybersecurity Expert
-                </div>
+
               </motion.div>
 
               <motion.h1
