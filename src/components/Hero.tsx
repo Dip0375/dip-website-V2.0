@@ -73,7 +73,7 @@ const Hero = () => {
                     target="_blank"
                     className="flex items-center"
                   >
-                    <span className="z-10 relative"> Visit all Links</span>
+                    <span className="z-10 relative"> Visit My Bio Links </span>
                     <div className="absolute inset-0 w-0 bg-foreground/10 group-hover:w-full transition-all duration-300"></div>
                   </Link>
                 </Button>
