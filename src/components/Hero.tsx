@@ -124,19 +124,6 @@ const Hero = () => {
                   </motion.div>
                 </div>
               </motion.div>
-              <motion.div
-                    whileHover={{ y: -5 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                    className="h-8 text-muted-foreground hover:text-foreground hover:text-cyber-accent transition-colors"
-                  >
-                    <span className="font-mono text-sm font-bold bg-cyber-secondary/80 py-1 px-3 rounded-md border border-cyber-accent/20">
-                      Barracuda Networks
-                    </span>
-                  </motion.div>
-                </div>
-              </motion.div>
-            </div>
-          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
