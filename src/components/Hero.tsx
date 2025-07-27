@@ -3,7 +3,8 @@
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import { Shield, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react"; // Keep this for your button icon
+import Image from "next/image"; // Add this line for your logo image
 import Link from "next/link";
 import TypingText from "./TypingText";
 
@@ -212,7 +213,13 @@ const Hero = () => {
                       className="inline-block"
                     >
                       <div className="p-5 rounded-full bg-cyber-dark/80 border border-cyber-accent/30 shadow-lg shadow-cyber-accent/10">
-                        <Shield className="h-24 w-24 text-cyber-accent animate-float" />
+                        <Image
+                          src="/logo.png"
+                          alt="My Logo"
+                          width={96}
+                          height={96}
+                          className="animate-float rounded-full"
+                        />
                       </div>
                     </motion.div>
                     <div className="mt-6 space-y-1">
