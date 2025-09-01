@@ -1,9 +1,10 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import { ExternalLink } from "lucide-react";
-import Image from "next/image";
+import { ExternalLink } from "lucide-react"; // Keep this for your button icon
+import Image from "next/image"; // Add this line for your logo image
 import Link from "next/link";
 import TypingText from "./TypingText";
 
@@ -17,8 +18,11 @@ const Hero = () => {
         <div className="absolute top-40 left-1/4 w-40 h-40 bg-cyber-accent/5 rounded-full filter blur-2xl animate-pulse-slow animation-delay-300"></div>
         <div className="absolute bottom-40 right-1/4 w-48 h-48 bg-cyber-accent/8 rounded-full filter blur-2xl animate-pulse-slow animation-delay-200"></div>
       </div>
+
       <div className="container px-6 md:px-10 pt-32 md:pt-0 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+          {/* LEFT column */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -30,7 +34,8 @@ const Hero = () => {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.7, delay: 0.2 }}
                 className="inline-block"
-              ></motion.div>
+              >
+              </motion.div>
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -116,7 +121,9 @@ const Hero = () => {
                 </div>
               </motion.div>
             </div>
-          </motion.div> {/* This was missing! */}
+          </motion.div> {/* <-- THIS closes the left column! */}
+          
+          {/* RIGHT column visualization */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -261,9 +268,11 @@ function analyzeSecurityThreats(network) {
               </div>
             </div>
           </motion.div>
+          
         </div>
       </div>
     </div>
   );
 };
+
 export default Hero;
