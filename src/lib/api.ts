@@ -1,5 +1,5 @@
 // lib/api.ts
-import { sanityClient } from './sanity'
+import { getSanityClient } from './sanity'
 import { fetchAllPostsQuery, fetchAllSkillsQuery, fetchCertificationsQuery, fetchProjectsQuery, fetchWorkExperienceQuery } from './queries'
 import { Post } from '../../types/post'
 import { Skill } from '../../types/Skill'
@@ -8,22 +8,22 @@ import { Project } from '../../types/project'
 import { WorkExperience } from '../../types/workExperience'
 
 export async function fetchAllPosts(): Promise<Post[]> {
-  return sanityClient.fetch(fetchAllPostsQuery)
+  return getSanityClient().fetch(fetchAllPostsQuery)
 }
 
 
 export const fetchSkills = async (): Promise<Skill[]> => {
-  return await sanityClient.fetch(fetchAllSkillsQuery)
+  return await getSanityClient().fetch(fetchAllSkillsQuery)
 }
 
 export const fetchCertifications = async (): Promise<Certification[]> => {
-  return await sanityClient.fetch(fetchCertificationsQuery)
+  return await getSanityClient().fetch(fetchCertificationsQuery)
 }
 
 export const fetchProjects = async (): Promise<Project[]> => {
-  return await sanityClient.fetch(fetchProjectsQuery)
+  return await getSanityClient().fetch(fetchProjectsQuery)
 }
 
 export const fetchWorkExperience = async (): Promise<WorkExperience[]> => {
-  return await sanityClient.fetch(fetchWorkExperienceQuery)
+  return await getSanityClient().fetch(fetchWorkExperienceQuery)
 }

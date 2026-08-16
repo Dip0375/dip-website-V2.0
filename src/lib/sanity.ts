@@ -1,26 +1,46 @@
-import { createClient } from '@sanity/client'
+import { createClient, type SanityClient } from '@sanity/client'
 import imageUrlBuilder from '@sanity/image-url'
 
-const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || ''
-const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
+let _client: SanityClient | null = null
+let _clientWithToken: SanityClient | null = null
+let _builder: ReturnType<typeof imageUrlBuilder> | null = null
 
-export const sanityClient = createClient({
-  projectId,
-  dataset,
-  apiVersion: '2024-05-22',
-  useCdn: true,
-})
+function getClient(): SanityClient {
+  if (!_client) {
+    _client = createClient({
+      projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
+      dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
+      apiVersion: '2024-05-22',
+      useCdn: true,
+    })
+  }
+  return _client
+}
 
-export const sanityClientWithToken = createClient({
-  projectId,
-  dataset,
-  apiVersion: '2024-05-22',
-  useCdn: false,
-  token: process.env.SANITY_API_TOKEN,
-})
+function getClientWithToken(): SanityClient {
+  if (!_clientWithToken) {
+    _clientWithToken = createClient({
+      projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
+      dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
+      apiVersion: '2024-05-22',
+      useCdn: false,
+      token: process.env.SANITY_API_TOKEN,
+    })
+  }
+  return _clientWithToken
+}
 
-const builder = imageUrlBuilder(sanityClient)
+export function getSanityClient() {
+  return getClient()
+}
+
+export function getSanityClientWithToken() {
+  return getClientWithToken()
+}
 
 export function urlFor(source: any) {
-  return builder.image(source)
+  if (!_builder) {
+    _builder = imageUrlBuilder(getClient())
+  }
+  return _builder.image(source)
 }

@@ -7,7 +7,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { sanityClient } from "@/lib/sanity";
+import { getSanityClientWithToken } from "@/lib/sanity";
 
 const CTA = () => {
   const [formData, setFormData] = useState({
@@ -43,7 +43,7 @@ const CTA = () => {
       }
 
       // Send form data to Sanity
-      await sanityClient.create({
+      await getSanityClientWithToken().create({
         _type: "contact",
         name,
         email,

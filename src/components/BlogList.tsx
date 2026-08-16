@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { BlogPost } from "@/lib/blogData";
 import BlogCard from "./BlogCard";
-import { sanityClient } from "@/lib/sanity";
+import { getSanityClient } from "@/lib/sanity";
 import { getAllCategoriesQuery } from "@/lib/queries";
 import { useQuery } from "@tanstack/react-query";
 import { Category } from "../../types/category";
@@ -13,7 +13,7 @@ import { usePosts } from "@/hooks/usePosts";
 
 
 async function fetchCategories(): Promise<Category[]> {
-  return sanityClient.fetch(getAllCategoriesQuery);
+  return getSanityClient().fetch(getAllCategoriesQuery);
 }
 
 const BlogList = () => {
