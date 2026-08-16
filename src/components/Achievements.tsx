@@ -28,7 +28,7 @@ const Achievements = () => {
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
   return (
-    <section id="experiences" className="py-20 relative overflow-hidden" ref={sectionRef}>
+    <section id="experiences" className="py-16 sm:py-20 relative overflow-hidden" ref={sectionRef}>
       {/* Background effects */}
       <div className="absolute inset-0 hero-hex-grid opacity-20" />
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyber-accent/30 to-transparent" />
@@ -64,7 +64,7 @@ const Achievements = () => {
         </motion.div>
       ))}
 
-      <div className="container px-6 md:px-10 relative z-10">
+      <div className="container px-4 sm:px-6 md:px-10 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -84,12 +84,12 @@ const Achievements = () => {
           </motion.div>
 
           <h2
-            className="text-3xl md:text-4xl font-bold mb-4 glitch-text"
+            className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 glitch-text"
             data-text="Professional Experience"
           >
             Professional Experience
           </h2>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground text-sm sm:text-base">
             Building secure cloud infrastructure and driving DevSecOps transformation across
             organizations.
           </p>

@@ -56,28 +56,28 @@ const Skills = () => {
   if (error) return <p>Failed to load skills</p>;
 
   return (
-    <section id="skills" className="py-20 relative">
+    <section id="skills" className="py-16 sm:py-20 relative">
       <div className="absolute inset-0 z-0 cyber-grid"></div>
 
-      <div className="container px-6 md:px-10 relative z-10">
+      <div className="container px-4 sm:px-6 md:px-10 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-16 max-w-2xl mx-auto"
+          className="text-center mb-10 sm:mb-16 max-w-2xl mx-auto"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
             Technical Skills
           </h2>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground text-sm sm:text-base">
             Comprehensive expertise across the cybersecurity spectrum, from
             network security to advanced threat detection and mitigation
             strategies.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-6">
           {skills?.map((skill, index) => (
             <motion.div
               key={index}

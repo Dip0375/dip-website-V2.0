@@ -63,14 +63,14 @@ const Navbar = () => {
   return (
     <>
       {/* Top bar - logo only */}
-      <nav className="fixed top-4 left-0 z-50 px-6 md:px-10 py-2">
+      <nav className="fixed top-4 left-0 z-50 px-4 sm:px-6 md:px-10 py-2">
         <Link href="/" className="flex items-center gap-2">
           <Image
-            width={40}
-            height={40}
+            width={36}
+            height={36}
             src="/logo.png"
             alt="Dipnarayan Nandi"
-            className="rounded-full"
+            className="rounded-full w-8 h-8 sm:w-10 sm:h-10"
           />
           <span className="font-bold text-lg text-foreground hidden sm:block">
             Infinite

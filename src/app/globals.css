@@ -653,36 +653,89 @@
 /* Mobile magic nav adjustments */
 @media (max-width: 768px) {
   .magic-nav {
-    top: 12px;
-    right: 12px;
-    padding: 6px 8px;
-    gap: 0;
+    top: auto;
+    bottom: 16px;
+    right: 50%;
+    transform: translateX(50%);
+    flex-direction: row;
+    padding: 8px 12px;
+    gap: 4px;
+    border-radius: 16px;
   }
   
   .magic-nav-item {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     border-radius: 10px;
   }
   
   .magic-nav-item.active {
-    width: 48px;
-    height: 48px;
-    margin-top: -12px;
-  }
-  
-  .magic-nav-profile {
     width: 40px;
     height: 40px;
   }
   
-  .magic-nav-profile img {
-    width: 34px;
-    height: 34px;
-    border-radius: 10px;
-  }
-  
   .nav-label {
     display: none;
+  }
+
+  .nav-label-mobile {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 1;
+    background: rgba(17, 34, 64, 0.95);
+    padding: 3px 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(100, 255, 218, 0.15);
+    color: #64ffda;
+    pointer-events: none;
+  }
+}
+
+/* Global responsive improvements */
+@media (max-width: 640px) {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Reduce padding on small screens */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Make images responsive */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Ensure touch targets are at least 44px */
+  button, a, [role="button"] {
+    min-height: 44px;
+  }
+}
+
+/* Tablet adjustments */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+/* Ensure smooth scrolling on all devices */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
   }
 }

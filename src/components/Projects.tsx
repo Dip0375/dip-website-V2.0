@@ -17,17 +17,17 @@ const Projects = () => {
   
 
   return (
-    <section id="projects" className="py-20">
-      <div className="container px-6 md:px-10">
+    <section id="projects" className="py-16 sm:py-20">
+      <div className="container px-4 sm:px-6 md:px-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-16 max-w-2xl mx-auto"
+          className="text-center mb-10 sm:mb-16 max-w-2xl mx-auto"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Featured Projects</h2>
-          <p className="text-muted-foreground">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">Featured Projects</h2>
+          <p className="text-muted-foreground text-sm sm:text-base">
             A showcase of security projects, implementations, and assessments across various industries
             and technical domains.
           </p>

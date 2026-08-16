@@ -48,7 +48,7 @@ const DigitalClock = () => {
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.2 }}
-      className="fixed top-4 right-6 z-50"
+      className="fixed top-4 right-4 sm:right-6 z-50 hidden sm:block"
     >
       <div className="flex items-center gap-1 px-3 py-1.5 rounded-full border border-cyber-accent/15 bg-cyber-dark/60 backdrop-blur-md shadow-lg shadow-cyber-accent/5">
         <div className="w-1 h-1 rounded-full bg-cyber-accent animate-pulse" />

@@ -71,9 +71,9 @@ const CTA = () => {
   };
   
   return (
-    <section className="py-20 relative overflow-hidden">
+    <section className="py-16 sm:py-20 relative overflow-hidden">
       <div className="absolute inset-0 z-0 cyber-grid"></div>
-      <div className="container px-6 md:px-10 max-w-4xl mx-auto relative z-10">
+      <div className="container px-4 sm:px-6 md:px-10 max-w-4xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -81,10 +81,10 @@ const CTA = () => {
           transition={{ duration: 0.5 }}
           className="text-center"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6">
             Let's Secure Your Digital Assets
           </h2>
-          <p className="text-lg text-muted-foreground mb-10">
+          <p className="text-base sm:text-lg text-muted-foreground mb-10">
             Ready to enhance your organization's security posture? Whether you
             need a comprehensive security assessment, implementation assistance,
             or strategic guidance, I'm here to help.
