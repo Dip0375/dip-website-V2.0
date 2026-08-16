@@ -1,4 +1,4 @@
-import { sanityClient } from "@/lib/sanity";
+import { sanityClientWithToken } from "@/lib/sanity";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
       createdAt: new Date().toISOString(),
     };
 
-    const result = await sanityClient.create(doc);
+    const result = await sanityClientWithToken.create(doc);
     return NextResponse.json({ success: true, result });
   } catch (error) {
     console.error("Sanity create error:", error);
