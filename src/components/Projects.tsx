@@ -1,11 +1,12 @@
 'use client'
+import { Tilt } from "@/components/ui/tilt-card";
 
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Briefcase, ExternalLink, Shield, ShieldAlert } from "lucide-react";
+import { Briefcase, ExternalLink, Shield, ShieldAlert, FolderGit2 } from "lucide-react";
 import { useProjects } from "@/hooks/useProjects";
 import Image from "next/image";
 import { urlFor } from "@/lib/sanity";
@@ -26,7 +27,10 @@ const Projects = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-10 sm:mb-16 max-w-2xl mx-auto"
         >
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">Featured Projects</h2>
+          <span className="section-eyebrow">
+            <FolderGit2 className="h-4 w-4" /> // case studies
+          </span>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 neon-title">Featured Projects</h2>
           <p className="text-muted-foreground text-sm sm:text-base">
             A showcase of security projects, implementations, and assessments across various industries
             and technical domains.
@@ -41,7 +45,8 @@ const Projects = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Card className="overflow-hidden h-full cyber-border hover:border-cyber-accent/50 transition-all duration-300 bg-cyber-secondary/50">
+              <Tilt className="h-full">
+              <Card className="cyber-card overflow-hidden h-full border-transparent">
                 <div className="h-48 bg-cyber-dark/50 cyber-grid border-b border-border flex items-center justify-center p-4">
                    <Image
                     className="rounded w-full h-full"
@@ -61,7 +66,7 @@ const Projects = () => {
                   
                   <div className="flex flex-wrap gap-2">
                     {project?.tags?.map(tag => (
-                      <Badge key={tag} variant="outline" className="bg-cyber-accent/10 border-cyber-accent/30 text-cyber-accent">
+                      <Badge key={tag} variant="outline" className="neon-chip text-cyber-accent">
                         {tag}
                       </Badge>
                     ))}
@@ -77,6 +82,7 @@ const Projects = () => {
                   </Button>
                 </CardFooter>
               </Card>
+              </Tilt>
             </motion.div>
           ))}
         </div>
