@@ -81,7 +81,7 @@ const CTA = () => {
           transition={{ duration: 0.5 }}
           className="text-center"
         >
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 neon-title">
             Let's Secure Your Digital Assets
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground mb-10">
