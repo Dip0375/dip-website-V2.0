@@ -3,12 +3,13 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Home, Zap, Award, Briefcase, FolderGit2, BookOpen, FileText } from "lucide-react";
+import { Home, Zap, Award, Briefcase, FolderGit2, BookOpen, FileText, GraduationCap } from "lucide-react";
 
 const navItems = [
   { name: "Home", path: "/", icon: Home },
   { name: "Skills", path: "/#skills", icon: Zap },
   { name: "Certifications", path: "/#certifications", icon: Award },
+  { name: "Education", path: "/#education", icon: GraduationCap },
   { name: "Projects", path: "/#projects", icon: FolderGit2 },
   { name: "Experiences", path: "/#experiences", icon: Briefcase },
   { name: "Resume", path: "/#resume", icon: FileText },
