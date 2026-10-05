@@ -4,6 +4,7 @@ import React from "react";
 import Hero from "./Hero";
 import Skills from "./Skills";
 import Certifications from "./Certifications";
+import Education from "./Education";
 import Projects from "./Projects";
 import Achievements from "./Achievements";
 import FlipbookResume from "./FlipbookResume";
@@ -21,6 +22,7 @@ const HomeClient = () => {
         <Hero />
         <Skills />
         <Certifications />
+        <Education />
         <Projects />
         <Achievements />
         <FlipbookResume />
