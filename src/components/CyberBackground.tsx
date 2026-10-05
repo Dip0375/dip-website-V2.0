@@ -28,18 +28,20 @@ const CyberBackground = () => {
     window.addEventListener("resize", resize);
 
     // Scroll-based opacity: bright on Hero, fade after
-    let currentOpacity = 1;
+    // Keep the rain subtle so the hero content stays the focus
+    const MAX_OPACITY = 0.35;
+    let currentOpacity = MAX_OPACITY;
     const onScroll = () => {
       const scrollY = window.scrollY;
       const fadeStart = 0;
       const fadeEnd = height * 0.8;
       if (scrollY <= fadeStart) {
-        currentOpacity = 1;
+        currentOpacity = MAX_OPACITY;
       } else if (scrollY >= fadeEnd) {
         currentOpacity = 0.05;
       } else {
         const t = (scrollY - fadeStart) / (fadeEnd - fadeStart);
-        currentOpacity = 1 - t * 0.95;
+        currentOpacity = MAX_OPACITY - t * (MAX_OPACITY - 0.05);
       }
       canvas.style.opacity = String(currentOpacity);
     };
@@ -200,7 +202,7 @@ const CyberBackground = () => {
     <canvas
       ref={canvasRef}
       className="fixed inset-0 z-0 pointer-events-none"
-      style={{ opacity: 1 }}
+      style={{ opacity: 0.35 }}
     />
   );
 };
