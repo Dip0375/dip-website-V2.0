@@ -1,11 +1,12 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, BookOpen, Download, ExternalLink, ShieldCheck } from "lucide-react";
+import { ArrowRight, BookOpen, ExternalLink, ShieldCheck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Tilt } from "@/components/ui/tilt-card";
+import ResumeButton from "./ResumeButton";
 
 const focusAreas = [
   "Cloud Security & CSPM",
@@ -57,7 +58,7 @@ const Hero = () => {
             </motion.span>
 
             <motion.div {...fadeUp(0.15)}>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.05] tracking-tight">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.05] tracking-tight">
                 <span className="neon-title">Dipnarayan Nandi</span>
               </h1>
               <p className="mt-3 font-mono text-sm sm:text-base text-muted-foreground">
@@ -102,14 +103,7 @@ const Hero = () => {
                 View my work
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
-              <a
-                href="/Dipnarayan_Nandi_Resume.pdf"
-                download
-                className="inline-flex items-center gap-2 rounded-full border border-sky-400/40 px-6 py-3 text-sm font-semibold text-sky-200 transition-colors hover:bg-sky-400/10"
-              >
-                <Download className="h-4 w-4" />
-                Resume
-              </a>
+              <ResumeButton />
               <div className="flex items-center gap-5 pl-1 text-sm">
                 <Link href="/blog" className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors">
                   <BookOpen className="h-4 w-4" /> Blog
@@ -172,7 +166,7 @@ const Hero = () => {
                     </div>
                   </div>
                   <div>
-                    <p className="text-lg font-semibold text-foreground">Dipnarayan Nandi</p>
+                    <p className="text-lg font-bold text-foreground">Dipnarayan Nandi</p>
                     <p className="text-sm text-muted-foreground">Security Engineer</p>
                     <p className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-emerald-400/10 px-2.5 py-0.5 text-[11px] font-medium text-emerald-300">
                       <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" /> Online
