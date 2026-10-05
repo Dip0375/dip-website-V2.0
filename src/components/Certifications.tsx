@@ -1,7 +1,8 @@
 "use client";
 
+import { Tilt } from "@/components/ui/tilt-card";
 import { motion } from "framer-motion";
-import { Check, Link as LinkIcon } from "lucide-react";
+import { Award, Check, Link as LinkIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useCertifications } from "@/hooks/useCertifications";
 import Link from "next/link";
@@ -21,7 +22,10 @@ const Certifications = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-10 sm:mb-16 max-w-2xl mx-auto"
         >
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
+          <span className="section-eyebrow">
+            <Award className="h-4 w-4" /> // credentials
+          </span>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 neon-title">
             Professional Certifications
           </h2>
           <p className="text-muted-foreground text-sm sm:text-base">
@@ -39,15 +43,16 @@ const Certifications = () => {
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
+              <Tilt className="h-full">
               <div
-                className={`p-6 rounded-lg border ${
+                className={`cyber-card p-6 rounded-lg border ${
                   cert.highlighted
                     ? "border-cyber-accent/30 bg-cyber-accent/5"
                     : "border-border bg-cyber-secondary/30"
                 } cyber-border h-full`}
               >
                 <div className="flex justify-between items-start">
-                  <div className="bg-cyber-dark/70 p-3 rounded-md border border-border">
+                  <div className="card-icon bg-cyber-dark/70 p-3 rounded-md border border-border">
                     <div className="text-2xl font-bold font-mono text-cyber-accent">
                       <Image
                         src={urlFor(cert.certificateImage).url()}
@@ -88,6 +93,7 @@ const Certifications = () => {
                   </Link>
                 </div>
               </div>
+              </Tilt>
             </motion.div>
           ))}
         </div>
