@@ -60,4 +60,14 @@ export const fetchAllSkillsQuery = `*[_type == "skill"] | order(_createdAt desc)
     role,
     duration,
     description
-  }` 
+  }`
+
+  export const fetchEducationQuery = `*[_type == "education"] | order(_createdAt desc){
+    _id,
+    degree,
+    fieldOfStudy,
+    institution,
+    institutionLink,
+    institutionLogo,
+    duration
+  }`
