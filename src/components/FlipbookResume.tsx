@@ -1,11 +1,13 @@
 ﻿"use client";
 
-import { useState, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useCallback, useEffect, useRef } from "react";
+import { motion, AnimatePresence, useInView } from "framer-motion";
+import { Tilt } from "@/components/ui/tilt-card";
+import ResumeButton from "./ResumeButton";
 import {
   ChevronLeft, ChevronRight, Mail, Globe, Linkedin, Github,
   MapPin, Shield, Award, Briefcase, GraduationCap, Code, Cloud,
-  Languages, Lock, Eye, Fingerprint, Zap,
+  Languages, Lock, Eye, Fingerprint, Zap, FileText,
 } from "lucide-react";
 
 const PageBorder = ({ children, pageNum, totalPages }: { children: React.ReactNode; pageNum: number; totalPages: number }) => (
@@ -266,98 +268,200 @@ const resumePages = [
   },
 ];
 
+const pageVariants = {
+  enter: (dir: "next" | "prev") => ({
+    rotateY: dir === "next" ? 0 : -105,
+    opacity: dir === "next" ? 0.4 : 1,
+    scale: dir === "next" ? 0.97 : 1,
+    zIndex: dir === "next" ? 1 : 3,
+  }),
+  center: { rotateY: 0, opacity: 1, scale: 1, zIndex: 2 },
+  exit: (dir: "next" | "prev") => ({
+    rotateY: dir === "next" ? -105 : 0,
+    opacity: dir === "next" ? 1 : 0.4,
+    scale: dir === "next" ? 1 : 0.97,
+    zIndex: dir === "next" ? 3 : 1,
+  }),
+};
+
 export default function FlipbookResume() {
   const [currentPage, setCurrentPage] = useState(0);
+  const [direction, setDirection] = useState<"next" | "prev">("next");
   const [isFlipping, setIsFlipping] = useState(false);
-  const [flipDirection, setFlipDirection] = useState<"next" | "prev">("next");
-  const [flipKey, setFlipKey] = useState(0);
+  const total = resumePages.length;
 
   const goToPage = useCallback(
     (newPage: number) => {
-      if (newPage < 0 || newPage >= resumePages.length || isFlipping) return;
-      setFlipDirection(newPage > currentPage ? "next" : "prev");
+      if (newPage < 0 || newPage >= total || newPage === currentPage || isFlipping) return;
+      setDirection(newPage > currentPage ? "next" : "prev");
       setIsFlipping(true);
-      setTimeout(() => {
-        setCurrentPage(newPage);
-        setFlipKey((k) => k + 1);
-        setTimeout(() => setIsFlipping(false), 600);
-      }, 50);
+      setCurrentPage(newPage);
+      setTimeout(() => setIsFlipping(false), 750);
     },
-    [currentPage, isFlipping]
+    [currentPage, isFlipping, total]
   );
 
   const nextPage = useCallback(() => goToPage(currentPage + 1), [currentPage, goToPage]);
   const prevPage = useCallback(() => goToPage(currentPage - 1), [currentPage, goToPage]);
 
+  // Keyboard navigation while the resume is on screen
+  const sectionRef = useRef<HTMLElement>(null);
+  const inView = useInView(sectionRef, { margin: "-30% 0px -30% 0px" });
+  useEffect(() => {
+    if (!inView) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") nextPage();
+      if (e.key === "ArrowLeft") prevPage();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [inView, nextPage, prevPage]);
+
   const page = resumePages[currentPage];
+  const progress = ((currentPage + 1) / total) * 100;
 
   return (
-    <section id="resume" className="py-12 sm:py-20 px-3 sm:px-4 relative">
-      <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-8 sm:mb-12">
-          <div className="inline-block mb-4">
-            <span className="text-xs font-mono text-[#64ffda]/70 bg-[#64ffda]/5 px-4 py-1.5 rounded-full border border-[#64ffda]/15">
-              RESUME
-            </span>
-          </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3">
-            Professional <span className="text-[#64ffda]">Resume</span>
-          </h2>
-          <p className="text-[#8892b0] text-xs sm:text-sm">Click through pages to explore my journey</p>
-        </div>
-
-        <div className="flex justify-center mb-4 sm:mb-6 gap-2">
-          {resumePages.map((_, i) => (
-            <button key={i} onClick={() => goToPage(i)}
-              className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full transition-all duration-300 border ${
-                i === currentPage
-                  ? "bg-[#64ffda] border-[#64ffda] shadow-[0_0_12px_rgba(100,255,218,0.5)] scale-110"
-                  : "bg-transparent border-[#64ffda]/30 hover:border-[#64ffda]/60 hover:bg-[#64ffda]/10"
-              }`} aria-label={`Go to page ${i + 1}`} />
-          ))}
-        </div>
-
-        <div className="relative mx-auto" style={{ maxWidth: "800px", aspectRatio: "4 / 3" }}>
-          <div className="absolute inset-0 bg-[#64ffda]/5 rounded-2xl blur-3xl" />
-          <div className="relative w-full h-[350px] sm:h-[450px] md:h-[500px] lg:h-[600px] rounded-2xl overflow-hidden"
-            style={{ perspective: "1200px" }}>
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={flipKey}
-                initial={{
-                  rotateY: flipDirection === "next" ? -90 : 90,
-                  opacity: 0.3,
-                  scale: 0.92,
-                }}
-                animate={{ rotateY: 0, opacity: 1, scale: 1 }}
-                exit={{ rotateY: flipDirection === "next" ? 90 : -90, opacity: 0.3, scale: 0.92 }}
-                transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
-                style={{ transformStyle: "preserve-3d" }}
-                className="absolute inset-0 rounded-2xl"
-              >
-                {page.front}
-              </motion.div>
-            </AnimatePresence>
-            <motion.div className="absolute -inset-px rounded-2xl pointer-events-none"
-              animate={{ boxShadow: ["0 0 15px rgba(100,255,218,0.15)", "0 0 30px rgba(100,255,218,0.25)", "0 0 15px rgba(100,255,218,0.15)"] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }} />
-          </div>
-        </div>
-
-        <div className="flex items-center justify-center gap-3 sm:gap-6 mt-4 sm:mt-6">
-          <motion.button onClick={prevPage} disabled={currentPage === 0}
-            className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full bg-[#112240] border border-[#64ffda]/30 text-[#64ffda] text-xs sm:text-sm font-medium hover:bg-[#64ffda]/10 hover:border-[#64ffda]/50 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
-            whileHover={{ scale: currentPage > 0 ? 1.05 : 1 }} whileTap={{ scale: currentPage > 0 ? 0.95 : 1 }}>
-            <ChevronLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> Prev
-          </motion.button>
-          <span className="text-[10px] sm:text-xs font-mono text-[#8892b0]">
-            Page {currentPage + 1} of {resumePages.length}
+    <section id="resume" ref={sectionRef} className="py-12 sm:py-20 px-3 sm:px-4 relative overflow-hidden">
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[400px] rounded-full bg-sky-400/5 blur-[140px] pointer-events-none" />
+      <div className="max-w-4xl mx-auto relative">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-8 sm:mb-10"
+        >
+          <span className="section-eyebrow">
+            <FileText className="h-4 w-4" /> // resume
           </span>
-          <motion.button onClick={nextPage} disabled={currentPage === resumePages.length - 1}
-            className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full bg-[#64ffda] text-[#0a192f] text-xs sm:text-sm font-bold hover:bg-[#45e0b8] transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-lg shadow-[#64ffda]/20"
-            whileHover={{ scale: currentPage < resumePages.length - 1 ? 1.05 : 1 }} whileTap={{ scale: currentPage < resumePages.length - 1 ? 0.95 : 1 }}>
-            Next <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 neon-title">
+            Professional Resume
+          </h2>
+          <p className="text-muted-foreground text-xs sm:text-sm">
+            Flip through the pages — use the buttons, your arrow keys, or swipe on mobile
+          </p>
+        </motion.div>
+
+        {/* page dots + progress */}
+        <div className="mx-auto mb-5 sm:mb-7 flex max-w-xs flex-col items-center gap-3">
+          <div className="flex justify-center gap-2">
+            {resumePages.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => goToPage(i)}
+                aria-label={`Go to page ${i + 1}`}
+                className={`h-2.5 rounded-full transition-all duration-500 ${
+                  i === currentPage
+                    ? "w-8 bg-gradient-to-r from-emerald-400 to-sky-400 shadow-[0_0_12px_rgba(56,189,248,0.5)]"
+                    : "w-2.5 bg-white/15 hover:bg-white/30"
+                }`}
+              />
+            ))}
+          </div>
+          <div className="h-[3px] w-full overflow-hidden rounded-full bg-white/10">
+            <motion.div
+              className="h-full rounded-full bg-gradient-to-r from-emerald-400 via-sky-400 to-orange-400"
+              animate={{ width: `${progress}%` }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            />
+          </div>
+        </div>
+
+        {/* the book */}
+        <motion.div
+          initial={{ opacity: 0, y: 60, rotateX: 22, scale: 0.94 }}
+          whileInView={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }}
+          viewport={{ once: true, margin: "-120px" }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          style={{ perspective: 1400 }}
+          className="relative mx-auto"
+        >
+          <Tilt className="mx-auto" max={3}>
+            <div className="relative mx-auto" style={{ maxWidth: "800px" }}>
+              {/* stacked paper edges for depth */}
+              <div className="absolute inset-0 translate-x-3 translate-y-3 rounded-2xl border border-white/5 bg-slate-900/60" />
+              <div className="absolute inset-0 translate-x-1.5 translate-y-1.5 rounded-2xl border border-white/5 bg-slate-900/80" />
+
+              <motion.div
+                className="relative w-full h-[350px] sm:h-[450px] md:h-[500px] lg:h-[600px] rounded-2xl"
+                style={{ perspective: "2800px", transformStyle: "preserve-3d" }}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.15}
+                onDragEnd={(_, info) => {
+                  if (info.offset.x < -60) nextPage();
+                  else if (info.offset.x > 60) prevPage();
+                }}
+              >
+                <AnimatePresence initial={false} custom={direction}>
+                  <motion.div
+                    key={currentPage}
+                    custom={direction}
+                    variants={pageVariants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{ duration: 0.75, ease: [0.645, 0.045, 0.355, 1] }}
+                    style={{ transformOrigin: "left center", transformStyle: "preserve-3d", backfaceVisibility: "hidden" }}
+                    className="absolute inset-0 overflow-hidden rounded-2xl bg-[#0a192f]"
+                  >
+                    {page.front}
+                    {/* page-turn shading sweeps across while flipping */}
+                    <motion.div
+                      className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/50 via-black/10 to-transparent"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 0 }}
+                      exit={{ opacity: 1 }}
+                      transition={{ duration: 0.75 }}
+                    />
+                  </motion.div>
+                </AnimatePresence>
+
+                {/* spine */}
+                <div className="pointer-events-none absolute inset-y-3 left-0 z-10 w-3 rounded-l-2xl bg-gradient-to-r from-black/40 to-transparent" />
+                <motion.div
+                  className="pointer-events-none absolute -inset-px rounded-2xl"
+                  animate={{
+                    boxShadow: [
+                      "0 0 18px rgba(56,189,248,0.12)",
+                      "0 0 32px rgba(74,222,128,0.2)",
+                      "0 0 18px rgba(56,189,248,0.12)",
+                    ],
+                  }}
+                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                />
+              </motion.div>
+            </div>
+          </Tilt>
+        </motion.div>
+
+        {/* controls */}
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-3 sm:gap-5">
+          <motion.button
+            onClick={prevPage}
+            disabled={currentPage === 0}
+            whileHover={currentPage > 0 ? { x: -3 } : undefined}
+            whileTap={currentPage > 0 ? { scale: 0.95 } : undefined}
+            className="flex items-center gap-1.5 rounded-full border border-sky-400/30 bg-slate-900/60 px-4 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-medium text-sky-200 transition-colors hover:bg-sky-400/10 disabled:cursor-not-allowed disabled:opacity-30"
+          >
+            <ChevronLeft className="h-4 w-4" /> Prev
           </motion.button>
+
+          <span className="font-mono text-[11px] sm:text-xs text-muted-foreground tabular-nums">
+            {String(currentPage + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+          </span>
+
+          <motion.button
+            onClick={nextPage}
+            disabled={currentPage === total - 1}
+            whileHover={currentPage < total - 1 ? { x: 3 } : undefined}
+            whileTap={currentPage < total - 1 ? { scale: 0.95 } : undefined}
+            className="flex items-center gap-1.5 rounded-full bg-gradient-to-r from-emerald-400 to-sky-400 px-4 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-bold text-slate-950 shadow-[0_10px_30px_-12px_rgba(56,189,248,0.6)] disabled:cursor-not-allowed disabled:opacity-30"
+          >
+            Next <ChevronRight className="h-4 w-4" />
+          </motion.button>
+
+          <ResumeButton />
         </div>
       </div>
     </section>
