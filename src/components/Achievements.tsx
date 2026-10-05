@@ -84,7 +84,7 @@ const Achievements = () => {
           </motion.div>
 
           <h2
-            className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 glitch-text"
+            className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 glitch-text neon-title"
             data-text="Professional Experience"
           >
             Professional Experience
