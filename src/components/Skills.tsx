@@ -1,5 +1,6 @@
 "use client";
 
+import { Tilt } from "@/components/ui/tilt-card";
 import { motion } from "framer-motion";
 import {
   Card,
@@ -9,7 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { ShieldCheck } from "lucide-react";
+import { ShieldCheck, Cpu } from "lucide-react";
 import { useSkills } from "@/hooks/useSkills";
 import Image from "next/image";
 import { urlFor } from "@/lib/sanity";
@@ -67,7 +68,10 @@ const Skills = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-10 sm:mb-16 max-w-2xl mx-auto"
         >
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
+          <span className="section-eyebrow">
+            <Cpu className="h-4 w-4" /> // tech arsenal
+          </span>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 neon-title">
             Technical Skills
           </h2>
           <p className="text-muted-foreground text-sm sm:text-base">
@@ -86,11 +90,12 @@ const Skills = () => {
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Card className="bg-cyber-secondary/50 border-border overflow-hidden aspect-square cyber-border flex justify-center items-center flex-col">
+              <Tilt className="h-full">
+              <Card className="cyber-card border-transparent overflow-hidden aspect-square flex justify-center items-center flex-col">
                 
                 <CardContent className="space-y-4 justify-center items-center flex-col flex">
                   <Image
-                    className="rounded-full"
+                    className="rounded-full card-icon"
                     src={urlFor(skill.icon).width(60).url()}
                     alt={skill.name}
                     width={60}
@@ -100,6 +105,7 @@ const Skills = () => {
                   <CardTitle className="text-lg">{skill.name}</CardTitle>
                 </CardContent>
               </Card>
+              </Tilt>
             </motion.div>
           ))}
         </div>
