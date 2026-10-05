@@ -1,8 +1,10 @@
 import { createClient, type SanityClient } from '@sanity/client'
 import imageUrlBuilder from '@sanity/image-url'
 
-const PROJECT_ID = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'cq69q11x'
-const DATASET = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
+// Sanity only accepts lowercase IDs; trim + lowercase so a mistyped env var
+// (e.g. "Production") can't break every query on the site.
+const PROJECT_ID = (process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'cq69q11x').trim().toLowerCase()
+const DATASET = (process.env.NEXT_PUBLIC_SANITY_DATASET || 'production').trim().toLowerCase()
 
 let _client: SanityClient | null = null
 let _clientWithToken: SanityClient | null = null
