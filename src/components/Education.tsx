@@ -1,5 +1,6 @@
 "use client";
 
+import { Tilt } from "@/components/ui/tilt-card";
 import { motion } from "framer-motion";
 import { Calendar, GraduationCap, Link as LinkIcon } from "lucide-react";
 import Link from "next/link";
@@ -22,7 +23,10 @@ const Education = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-10 sm:mb-16 max-w-2xl mx-auto"
         >
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
+          <span className="section-eyebrow">
+            <GraduationCap className="h-4 w-4" /> // academics
+          </span>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 neon-title">
             Education
           </h2>
           <p className="text-muted-foreground text-sm sm:text-base">
@@ -40,8 +44,9 @@ const Education = () => {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className={education.length === 1 ? "md:col-span-2" : ""}
             >
-              <div className="p-6 rounded-lg border border-border bg-cyber-secondary/30 cyber-border h-full flex gap-5 items-start">
-                <div className="bg-cyber-dark/70 p-3 rounded-md border border-border shrink-0">
+              <Tilt className="h-full">
+              <div className="cyber-card p-6 rounded-lg border border-transparent h-full flex gap-5 items-start">
+                <div className="card-icon bg-cyber-dark/70 p-3 rounded-md border border-border shrink-0">
                   {edu.institutionLogo ? (
                     <Image
                       src={urlFor(edu.institutionLogo).width(120).url()}
@@ -80,6 +85,7 @@ const Education = () => {
                   )}
                 </div>
               </div>
+              </Tilt>
             </motion.div>
           ))}
         </div>
