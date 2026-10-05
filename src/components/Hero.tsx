@@ -1,367 +1,167 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
-import { ExternalLink, Shield, Lock, Eye, Terminal, Fingerprint, Bug, Download, ArrowDown, Check, Loader2 } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowRight, BookOpen, Download, ExternalLink, ShieldCheck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import TypingText from "./TypingText";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
+import { Tilt } from "@/components/ui/tilt-card";
+
+const focusAreas = [
+  "Cloud Security & CSPM",
+  "Threat Detection & SIEM",
+  "Incident Response",
+  "WAF & Network Firewall",
+  "DevSecOps Automation",
+];
+
+const certifications = [
+  "AWS Security – Specialty",
+  "AWS Solutions Architect",
+  "Barracuda WaaS (WAS200)",
+];
+
+const terminalLines = [
+  { cmd: "whoami", out: "dipnarayan · aka infinite" },
+  { cmd: "cat focus.txt", out: "cloud-sec · siem · ir · waf" },
+  { cmd: "status --now", out: "● securing digital assets" },
+];
+
+const fadeUp = (delay: number) => ({
+  initial: { opacity: 0, y: 18 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] as const },
+});
 
 const Hero = () => {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [downloadState, setDownloadState] = useState<"idle" | "loading" | "done">("idle");
+  const [focusIndex, setFocusIndex] = useState(0);
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const { clientX, clientY } = e;
-      const { innerWidth, innerHeight } = window;
-      setMousePos({
-        x: (clientX / innerWidth - 0.5) * 20,
-        y: (clientY / innerHeight - 0.5) * 20,
-      });
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    const id = setInterval(() => setFocusIndex((i) => (i + 1) % focusAreas.length), 2600);
+    return () => clearInterval(id);
   }, []);
 
-  const securityIcons = useMemo(
-    () => [
-      { Icon: Shield, x: -160, y: -80 },
-      { Icon: Lock, x: 160, y: -60 },
-      { Icon: Eye, x: -140, y: 100 },
-      { Icon: Bug, x: 150, y: 110 },
-      { Icon: Terminal, x: -60, y: -140 },
-      { Icon: Fingerprint, x: 80, y: 140 },
-    ],
-    []
-  );
-
-  const particles = useMemo(
-    () =>
-      Array.from({ length: 10 }, (_, i) => ({
-        id: i,
-        left: `${(i * 37 + 13) % 100}%`,
-        top: `${(i * 53 + 7) % 100}%`,
-        duration: 4 + (i % 4),
-        delay: (i % 5) * 0.5,
-      })),
-    []
-  );
-
   return (
-    <div className="relative min-h-screen flex items-center overflow-hidden hero-hex-grid">
-      {/* Background particles */}
-      <div className="absolute inset-0 z-0">
-        {particles.map((p) => (
-          <motion.div
-            key={p.id}
-            className="absolute w-1 h-1 bg-cyber-accent/20 rounded-full"
-            style={{ left: p.left, top: p.top }}
-            animate={{
-              y: [0, -30, 0],
-              opacity: [0.1, 0.4, 0.1],
-              scale: [1, 1.5, 1],
-            }}
-            transition={{
-              duration: p.duration,
-              repeat: Infinity,
-              delay: p.delay,
-            }}
-          />
-        ))}
-        <div className="absolute top-20 right-20 w-72 h-72 bg-cyber-accent/4 rounded-full filter blur-[100px] animate-pulse-slow" />
-        <div className="absolute bottom-20 left-20 w-96 h-96 bg-cyber-accent/3 rounded-full filter blur-[120px] animate-pulse-slow animation-delay-500" />
-        <div className="absolute top-1/2 left-1/3 w-48 h-48 bg-cyber-accent/3 rounded-full filter blur-[80px] animate-pulse-slow animation-delay-300" />
-      </div>
+    <div className="relative min-h-screen flex items-center overflow-hidden">
+      {/* Calm background: faint grid + two soft glows */}
+      <div className="absolute inset-0 z-0 hero-hex-grid opacity-40" />
+      <div className="absolute -top-32 right-[-10%] w-[520px] h-[520px] rounded-full bg-sky-400/10 blur-[140px]" />
+      <div className="absolute bottom-[-20%] left-[-10%] w-[560px] h-[560px] rounded-full bg-emerald-400/10 blur-[150px]" />
 
-      <div className="absolute inset-0 z-0 hero-circuit-lines opacity-20" />
+      <div className="container px-4 sm:px-6 md:px-10 pt-28 pb-16 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-12 lg:gap-16 items-center">
+          {/* LEFT: identity + message */}
+          <div className="space-y-7">
+            <motion.span {...fadeUp(0.05)} className="section-eyebrow !mb-0">
+              <ShieldCheck className="h-4 w-4" /> Security Engineer · AWS Certified
+            </motion.span>
 
-      <div className="container px-4 sm:px-6 md:px-10 pt-24 sm:pt-28 md:pt-24 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-          {/* LEFT column */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <div className="space-y-4 sm:space-y-6">
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.2 }}
-                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight"
-              >
-                <span className="text-foreground">I&apos;m </span>
-                <span className="text-cyber-accent cyber-text-glow">Infinite</span>
-                <br />
-                <span className="bg-gradient-to-r from-foreground via-foreground to-cyber-accent/60 bg-clip-text text-transparent">
-                  AKA DIPNARAYAN NANDI
-                </span>
-              </motion.h1>
+            <motion.div {...fadeUp(0.15)}>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.05] tracking-tight">
+                <span className="neon-title">Dipnarayan Nandi</span>
+              </h1>
+              <p className="mt-3 font-mono text-sm sm:text-base text-muted-foreground">
+                aka <span className="text-foreground">Infinite</span> ♾️
+              </p>
+            </motion.div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.35 }}
-              >
-                <TypingText />
-              </motion.div>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.45 }}
-                className="text-sm sm:text-base md:text-lg text-white max-w-lg border-l-2 border-cyber-accent/30 pl-4 sm:pl-5 py-2 leading-relaxed"
-              >
-                Cybersecurity professional with expertise in Cloud Security, DevSecOps, Automation, Incident Response and threat intelligence. Helping
-                organizations protect their most valuable digital assets.
-              </motion.p>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.6 }}
-                className="flex flex-col sm:flex-row gap-4 pt-2"
-              >
-                <Button
-                  asChild
-                  size="lg"
-                  className="bg-cyber-accent hover:bg-cyber-accent/90 text-cyber-dark font-semibold group relative overflow-hidden transition-all duration-300 shadow-lg shadow-cyber-accent/20"
-                >
-                  <Link
-                    href="https://dipnarayan.bio.link/"
-                    target="_blank"
-                    className="flex items-center"
-                  >
-                    <span className="z-10 relative">Visit My Bio Links</span>
-                    <ExternalLink
-                      size={16}
-                      className="ml-2 z-10 relative group-hover:translate-x-1 transition-transform"
-                    />
-                    <div className="absolute inset-0 w-0 bg-foreground/10 group-hover:w-full transition-all duration-300" />
-                  </Link>
-                </Button>
-                <Button
-                  asChild
-                  variant="outline"
-                  size="lg"
-                  className="border-cyber-accent/40 text-cyber-accent hover:bg-cyber-accent/10 group"
-                >
-                  <Link href="/blog" className="flex items-center">
-                    Read Blog
-                    <ExternalLink
-                      size={16}
-                      className="ml-2 opacity-70 group-hover:translate-x-1 transition-transform"
-                    />
-                  </Link>
-                </Button>
-              </motion.div>
-
-              {/* Animated Download Resume Button */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.65 }}
-              >
-                <motion.button
-                  onClick={() => {
-                    if (downloadState === "idle") {
-                      setDownloadState("loading");
-                      const link = document.createElement("a");
-                      link.href = "/Dipnarayan_Nandi_Resume.pdf";
-                      link.download = "Dipnarayan_Nandi_Resume.pdf";
-                      document.body.appendChild(link);
-                      link.click();
-                      document.body.removeChild(link);
-                      setTimeout(() => setDownloadState("done"), 2000);
-                      setTimeout(() => setDownloadState("idle"), 4000);
-                    }
-                  }}
-                  whileHover={{ scale: downloadState === "idle" ? 1.05 : 1 }}
-                  whileTap={{ scale: downloadState === "idle" ? 0.95 : 1 }}
-                  animate={{
-                    width: downloadState === "idle" ? 220 : downloadState === "loading" ? 64 : 180,
-                    borderColor:
-                      downloadState === "done"
-                        ? "rgba(34, 197, 94, 0.8)"
-                        : "rgba(100, 255, 218, 0.4)",
-                    backgroundColor:
-                      downloadState === "done"
-                        ? "rgba(34, 197, 94, 0.1)"
-                        : "rgba(100, 255, 218, 0.05)",
-                  }}
-                  transition={{ duration: 0.4, ease: "easeInOut" }}
-                  className="flex items-center justify-center gap-3 py-2 px-2 pr-6 rounded-full border backdrop-blur-sm cursor-pointer overflow-hidden"
-                  style={{ minWidth: downloadState === "loading" ? 64 : undefined }}
-                >
-                  {/* Circular icon area */}
-                  <motion.div
-                    className="relative flex items-center justify-center w-10 h-10 shrink-0"
-                    animate={{
-                      rotate: downloadState === "loading" ? 360 : 0,
-                    }}
-                    transition={{
-                      duration: downloadState === "loading" ? 1 : 0,
-                      repeat: downloadState === "loading" ? Infinity : 0,
-                      ease: "linear",
-                    }}
-                  >
-                    {/* Outer animated ring - only in idle */}
-                    {downloadState === "idle" && (
-                      <motion.div
-                        className="absolute inset-0 rounded-full border-2 border-cyber-accent/30"
-                        animate={{
-                          scale: [1, 1.2, 1],
-                          opacity: [0.5, 0, 0.5],
-                        }}
-                        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                      />
-                    )}
-
-                    {/* Loading spinner ring */}
-                    {downloadState === "loading" && (
-                      <svg className="absolute inset-0 w-10 h-10" viewBox="0 0 40 40">
-                        <motion.circle
-                          cx="20"
-                          cy="20"
-                          r="17"
-                          fill="none"
-                          stroke="rgba(100, 255, 218, 0.2)"
-                          strokeWidth="3"
-                        />
-                        <motion.circle
-                          cx="20"
-                          cy="20"
-                          r="17"
-                          fill="none"
-                          stroke="#64ffda"
-                          strokeWidth="3"
-                          strokeLinecap="round"
-                          strokeDasharray="107"
-                          strokeDashoffset="80"
-                          animate={{ strokeDashoffset: [80, 20, 80] }}
-                          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                        />
-                      </svg>
-                    )}
-
-                    {/* Inner circle */}
-                    <motion.div
-                      className="w-10 h-10 rounded-full flex items-center justify-center"
-                      animate={{
-                        backgroundColor:
-                          downloadState === "done"
-                            ? "rgba(34, 197, 94, 1)"
-                            : "rgba(100, 255, 218, 1)",
-                      }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      {/* Idle: bouncing arrow */}
-                      {downloadState === "idle" && (
-                        <motion.div
-                          animate={{ y: [0, 3, 0] }}
-                          transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
-                        >
-                          <ArrowDown className="w-5 h-5 text-cyber-dark" strokeWidth={2.5} />
-                        </motion.div>
-                      )}
-
-                      {/* Loading: spinning loader */}
-                      {downloadState === "loading" && (
-                        <motion.div
-                          animate={{ rotate: 360 }}
-                          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                        >
-                          <Loader2 className="w-5 h-5 text-cyber-dark" strokeWidth={2.5} />
-                        </motion.div>
-                      )}
-
-                      {/* Done: checkmark */}
-                      {downloadState === "done" && (
-                        <motion.div
-                          initial={{ scale: 0, rotate: -180 }}
-                          animate={{ scale: 1, rotate: 0 }}
-                          transition={{ type: "spring", stiffness: 200, damping: 10 }}
-                        >
-                          <Check className="w-5 h-5 text-white" strokeWidth={3} />
-                        </motion.div>
-                      )}
-                    </motion.div>
-                  </motion.div>
-
-                  {/* Text label */}
-                  <motion.span
-                    className="text-sm font-semibold whitespace-nowrap"
-                    animate={{
-                      color:
-                        downloadState === "done"
-                          ? "rgba(34, 197, 94, 1)"
-                          : "rgba(100, 255, 218, 1)",
-                      opacity: downloadState === "loading" ? 0 : 1,
-                      width: downloadState === "loading" ? 0 : "auto",
-                    }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    {downloadState === "done" ? "Done!" : "Download Resume"}
-                  </motion.span>
-                </motion.button>
-              </motion.div>
-            </div>
-          </motion.div>
-
-          {/* RIGHT column - 3D Profile */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-            className="hidden lg:flex justify-center items-center"
-          >
-            <div
-              className="relative hero-3d-scene"
-              style={{
-                transform: `translate(${mousePos.x * 0.3}px, ${mousePos.y * 0.3}px)`,
-                transition: "transform 0.1s ease-out",
-              }}
+            <motion.div
+              {...fadeUp(0.25)}
+              className="text-xl sm:text-2xl md:text-3xl font-semibold leading-[1.3] text-foreground/90 flex flex-col sm:flex-row sm:items-center gap-x-3 gap-y-1"
             >
-              <div className="hero-3d-card relative">
-                <div className="relative z-10 flex flex-col items-center">
-                  {securityIcons.map(({ Icon, x, y }, i) => (
-                    <motion.div
-                      key={i}
-                      className="absolute"
-                      style={{
-                        left: `calc(50% + ${x}px)`,
-                        top: `calc(50% + ${y}px)`,
-                      }}
-                      animate={{
-                        y: [0, -8, 0, 8, 0],
-                        x: [0, 5, 0, -5, 0],
-                      }}
-                      transition={{
-                        duration: 8 + i * 2,
-                        repeat: Infinity,
-                        delay: i * 0.5,
-                        ease: "easeInOut",
-                      }}
-                    >
-                      <div className="p-2.5 rounded-xl bg-cyber-secondary/80 border border-cyber-accent/20 backdrop-blur-sm">
-                        <Icon className="w-5 h-5 text-cyber-accent/70" />
-                      </div>
-                    </motion.div>
-                  ))}
+              <span className="h-[1.3em]">Focused on</span>
+              <span className="relative block h-[1.3em] w-full sm:w-auto sm:min-w-[24ch] overflow-hidden">
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={focusAreas[focusIndex]}
+                    initial={{ y: "100%", opacity: 0 }}
+                    animate={{ y: "0%", opacity: 1 }}
+                    exit={{ y: "-100%", opacity: 0 }}
+                    transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                    className="absolute left-0 top-0 whitespace-nowrap text-sky-300"
+                  >
+                    {focusAreas[focusIndex]}
+                  </motion.span>
+                </AnimatePresence>
+              </span>
+            </motion.div>
 
-                  {/* Profile image */}
-                  <div className="relative">
-                    {/* Circle layer 1 - outer, slow rotate */}
-                    <div className="absolute -inset-7 rounded-full border border-cyber-accent/20" style={{ animation: "orbit 20s linear infinite" }} />
-                    {/* Circle layer 2 - middle, reverse rotate */}
-                    <div className="absolute -inset-5 rounded-full border border-cyber-accent/15" style={{ animation: "orbit 15s linear infinite reverse" }} />
-                    {/* Circle layer 3 - inner, glow pulse */}
-                    <div className="absolute -inset-3 rounded-full border border-cyber-accent/25 animate-glow-pulse" />
+            <motion.p
+              {...fadeUp(0.35)}
+              className="max-w-xl text-base sm:text-lg leading-relaxed text-muted-foreground"
+            >
+              I design, automate and defend cloud environments — from WAF tuning and SIEM detections
+              to incident response — so organizations can grow without leaving the door open.
+            </motion.p>
 
-                    {/* Profile image */}
-                    <div className="relative w-40 h-40 md:w-48 md:h-48 rounded-full overflow-hidden border-2 border-cyber-accent/40 shadow-2xl shadow-cyber-accent/20 group cursor-pointer">
+            <motion.div {...fadeUp(0.45)} className="flex flex-wrap items-center gap-3 pt-1">
+              <Link
+                href="/#projects"
+                className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-400 to-sky-400 px-6 py-3 text-sm font-semibold text-slate-950 shadow-[0_10px_30px_-12px_rgba(56,189,248,0.6)] transition-transform hover:-translate-y-0.5"
+              >
+                View my work
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+              <a
+                href="/Dipnarayan_Nandi_Resume.pdf"
+                download
+                className="inline-flex items-center gap-2 rounded-full border border-sky-400/40 px-6 py-3 text-sm font-semibold text-sky-200 transition-colors hover:bg-sky-400/10"
+              >
+                <Download className="h-4 w-4" />
+                Resume
+              </a>
+              <div className="flex items-center gap-5 pl-1 text-sm">
+                <Link href="/blog" className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors">
+                  <BookOpen className="h-4 w-4" /> Blog
+                </Link>
+                <Link
+                  href="https://dipnarayan.bio.link/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <ExternalLink className="h-4 w-4" /> Links
+                </Link>
+              </div>
+            </motion.div>
+
+            <motion.div {...fadeUp(0.55)} className="pt-4 border-t border-white/5">
+              <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground/70">
+                Certified
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {certifications.map((c) => (
+                  <span
+                    key={c}
+                    className="rounded-md border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs text-foreground/80"
+                  >
+                    {c}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+
+          {/* RIGHT: single 3D identity card */}
+          <motion.div
+            initial={{ opacity: 0, y: 30, rotateX: 10 }}
+            animate={{ opacity: 1, y: 0, rotateX: 0 }}
+            transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="hidden lg:block"
+          >
+            <Tilt className="mx-auto w-full max-w-md" max={9}>
+              <div className="cyber-card rounded-2xl p-7">
+                <div className="flex items-center gap-2 pb-5 border-b border-white/5">
+                  <span className="h-2.5 w-2.5 rounded-full bg-red-400/70" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-amber-400/70" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/70" />
+                  <span className="ml-3 font-mono text-xs text-muted-foreground">infinite@secops:~</span>
+                </div>
+
+                <div className="flex items-center gap-5 py-6">
+                  <div className="relative h-24 w-24 shrink-0">
+                    <div className="absolute -inset-1 rounded-full bg-gradient-to-br from-emerald-400 via-sky-400 to-orange-400 opacity-70 blur-[2px]" />
+                    <div className="relative h-24 w-24 overflow-hidden rounded-full border-2 border-slate-900 group">
                       <Image
                         src="/profile.png"
                         alt="Dipnarayan Nandi"
@@ -369,43 +169,38 @@ const Hero = () => {
                         className="object-cover blur-md group-hover:blur-0 transition-all duration-500"
                         priority
                       />
-                      <motion.div
-                        className="absolute inset-0 bg-gradient-to-b from-transparent via-cyber-accent/15 to-transparent group-hover:opacity-0 transition-opacity duration-500"
-                        animate={{ y: ["-100%", "200%"] }}
-                        transition={{
-                          duration: 3,
-                          repeat: Infinity,
-                          ease: "linear",
-                          repeatDelay: 2,
-                        }}
-                      />
                     </div>
                   </div>
-
-                  {/* Info below */}
-                  <motion.div
-                    className="mt-8 text-center"
-                  >
-                    <h3 className="text-xl font-bold text-cyber-accent cyber-text-glow">
-                      Security First Approach
-                    </h3>
-                    <div className="text-sm font-mono text-cyber-accent/70 mt-3 flex flex-wrap justify-center gap-2">
-                      {["Network Security", "Threat Detection", "Cloud Security"].map(
-                        (tag) => (
-                          <span
-                            key={tag}
-                            className="bg-cyber-dark/60 px-3 py-1 rounded-full border border-cyber-accent/15 backdrop-blur-sm"
-                          >
-                            {tag}
-                          </span>
-                        )
-                      )}
-                    </div>
-                  </motion.div>
+                  <div>
+                    <p className="text-lg font-semibold text-foreground">Dipnarayan Nandi</p>
+                    <p className="text-sm text-muted-foreground">Security Engineer</p>
+                    <p className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-emerald-400/10 px-2.5 py-0.5 text-[11px] font-medium text-emerald-300">
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" /> Online
+                    </p>
+                  </div>
                 </div>
 
+                <div className="space-y-3 rounded-xl bg-slate-950/60 p-4 font-mono text-[13px]">
+                  {terminalLines.map((l, i) => (
+                    <motion.div
+                      key={l.cmd}
+                      initial={{ opacity: 0, x: -8 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.9 + i * 0.35, duration: 0.4 }}
+                    >
+                      <p>
+                        <span className="text-emerald-400">$</span>{" "}
+                        <span className="text-foreground/90">{l.cmd}</span>
+                      </p>
+                      <p className="pl-4 text-sky-300/90">{l.out}</p>
+                    </motion.div>
+                  ))}
+                  <p>
+                    <span className="text-emerald-400">$</span> <span className="typing-cursor" />
+                  </p>
+                </div>
               </div>
-            </div>
+            </Tilt>
           </motion.div>
         </div>
       </div>
