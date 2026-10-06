@@ -2,11 +2,11 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, BookOpen, ExternalLink, ShieldCheck } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Tilt } from "@/components/ui/tilt-card";
 import ResumeButton from "./ResumeButton";
+import HeroTerminal from "./HeroTerminal";
 
 const focusAreas = [
   "Cloud Security & CSPM",
@@ -20,12 +20,6 @@ const certifications = [
   "AWS Security – Specialty",
   "AWS Solutions Architect",
   "Barracuda WaaS (WAS200)",
-];
-
-const terminalLines = [
-  { cmd: "whoami", out: "dipnarayan · aka infinite" },
-  { cmd: "cat focus.txt", out: "cloud-sec · siem · ir · waf" },
-  { cmd: "status --now", out: "● securing digital assets" },
 ];
 
 const fadeUp = (delay: number) => ({
@@ -144,56 +138,7 @@ const Hero = () => {
             className="hidden lg:block"
           >
             <Tilt className="mx-auto w-full max-w-md" max={9}>
-              <div className="cyber-card rounded-2xl p-7">
-                <div className="flex items-center gap-2 pb-5 border-b border-white/5">
-                  <span className="h-2.5 w-2.5 rounded-full bg-red-400/70" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-amber-400/70" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/70" />
-                  <span className="ml-3 font-mono text-xs text-muted-foreground">infinite@secops:~</span>
-                </div>
-
-                <div className="flex items-center gap-5 py-6">
-                  <div className="relative h-24 w-24 shrink-0">
-                    <div className="absolute -inset-1 rounded-full bg-gradient-to-br from-emerald-400 via-sky-400 to-orange-400 opacity-70 blur-[2px]" />
-                    <div className="relative h-24 w-24 overflow-hidden rounded-full border-2 border-slate-900 group">
-                      <Image
-                        src="/profile.png"
-                        alt="Dipnarayan Nandi"
-                        fill
-                        className="object-cover blur-md group-hover:blur-0 transition-all duration-500"
-                        priority
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <p className="text-lg font-bold text-foreground">Dipnarayan Nandi</p>
-                    <p className="text-sm text-muted-foreground">Security Engineer</p>
-                    <p className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-emerald-400/10 px-2.5 py-0.5 text-[11px] font-medium text-emerald-300">
-                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" /> Online
-                    </p>
-                  </div>
-                </div>
-
-                <div className="space-y-3 rounded-xl bg-slate-950/60 p-4 font-mono text-[13px]">
-                  {terminalLines.map((l, i) => (
-                    <motion.div
-                      key={l.cmd}
-                      initial={{ opacity: 0, x: -8 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.9 + i * 0.35, duration: 0.4 }}
-                    >
-                      <p>
-                        <span className="text-emerald-400">$</span>{" "}
-                        <span className="text-foreground/90">{l.cmd}</span>
-                      </p>
-                      <p className="pl-4 text-sky-300/90">{l.out}</p>
-                    </motion.div>
-                  ))}
-                  <p>
-                    <span className="text-emerald-400">$</span> <span className="typing-cursor" />
-                  </p>
-                </div>
-              </div>
+              <HeroTerminal />
             </Tilt>
           </motion.div>
         </div>
